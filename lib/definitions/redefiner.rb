@@ -56,13 +56,18 @@ module LowType
 
       def build_methods(method_nodes:, klass:, file_path:)
         method_nodes.each do |name, method_node|
-          file = ProxyFactory.file_proxy(path: file_path, node: method_node, scope: "#{klass}##{name}")
+          begin # rubocop:disable Style/RedundantBegin
+            file = ProxyFactory.file_proxy(path: file_path, node: method_node, scope: "#{klass}##{name}")
 
-          param_proxies = ProxyFactory.param_proxies(method_node:, file:)
-          return_proxy = ProxyFactory.return_proxy(method_node:, file:)
-          method_proxy = MethodProxy.new(name:, params: param_proxies, return_proxy:, file:)
+            param_proxies = ProxyFactory.param_proxies(method_node:, file:)
+            return_proxy = ProxyFactory.return_proxy(method_node:, file:)
+            method_proxy = MethodProxy.new(name:, params: param_proxies, return_proxy:, file:)
 
-          Repository.save(method: method_proxy, klass:)
+            Repository.save(method: method_proxy, klass:)
+          # When we can't parse the method's params or return type then skip it.
+          rescue SyntaxError
+            next
+          end
         end
 
         Repository.all(klass:)
