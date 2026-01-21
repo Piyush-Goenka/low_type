@@ -14,7 +14,7 @@ module LowType
 
   # Represent types and default values as a series of chainable expressions.
   class TypeExpression < ::Expressions::Expression
-    attr_reader :types, :default_value
+    attr_reader :types
 
     # @param type - A literal type or an instance representation of a typed structure.
     def initialize(type: nil, default_value: :LOW_TYPE_UNDEFINED)
@@ -23,6 +23,10 @@ module LowType
       @default_value = default_value
       # TODO: Override per type expression with a config expression.
       @deep_type_check = LowType.config.deep_type_check
+    end
+
+    def default_value
+      @default_value
     end
 
     def required?

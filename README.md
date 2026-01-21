@@ -276,9 +276,18 @@ class MyApp < Sinatra::Base
 end
 ```
 
-<!--### Rails [UNRELEASED]
+### LowDependency
 
-If you still want to access Rails' `HTML` sanitizer class while in the scope of the `LowType` module, then use their full namespace `Rails::HTML`.-->
+With [LowDependency](https://github.com/low-rb/low_dependency) you can inject your dependencies automatically via the constructor:
+```ruby
+class MyClass
+  include LowType
+
+  def initialize(my_dependency: Dependency)
+    @my_dependency = my_dependency # => The dependency is injected.
+  end
+end
+```
 
 ### Rubocop
 

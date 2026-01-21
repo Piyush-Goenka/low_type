@@ -18,7 +18,7 @@ module LowType
     end
 
     def required?
-      @expression.default_value == :LOW_TYPE_UNDEFINED
+      @expression.required?
     end
 
     def error_type
