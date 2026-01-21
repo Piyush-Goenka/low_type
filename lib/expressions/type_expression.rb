@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'expressions'
+
 require_relative '../proxies/param_proxy'
 require_relative '../queries/type_query'
 
@@ -11,7 +13,7 @@ module LowType
   HIDDEN_PATHS = [File.expand_path(__FILE__), *adapter_paths, *module_paths].freeze
 
   # Represent types and default values as a series of chainable expressions.
-  class TypeExpression
+  class TypeExpression < ::Expressions::Expression
     attr_reader :types, :default_value
 
     # @param type - A literal type or an instance representation of a typed structure.
@@ -21,19 +23,6 @@ module LowType
       @default_value = default_value
       # TODO: Override per type expression with a config expression.
       @deep_type_check = LowType.config.deep_type_check
-    end
-
-    def |(expression)
-      if expression.instance_of?(::LowType::TypeExpression)
-        @types += expression.types
-        @default_value = expression.default_value
-      elsif ::LowType::TypeQuery.value?(expression)
-        @default_value = expression
-      else
-        @types << expression
-      end
-
-      self
     end
 
     def required?
@@ -71,6 +60,24 @@ module LowType
     end
 
     private
+
+    def union_expression(expression)
+      @types += expression.types
+      @default_value = expression.default_value
+    end
+
+    def union_type(type)
+      @types << type
+    end
+
+    def union_value(value)
+      @default_value = value
+    end
+
+    # Override Expressions as LowType supports complex types which are implemented as values.
+    def value?(expression)
+      ::LowType::TypeQuery.value?(expression) || expression.nil?
+    end
 
     def valid_subtype(subtype:)
       if subtype.is_a?(TypeExpression)
