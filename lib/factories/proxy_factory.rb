@@ -101,7 +101,7 @@ module Low
           expression = nil
           if local_variable.is_a?(::Expressions::Expression)
             expression = local_variable
-          elsif local_variable.class == Class && local_variable < ::Expressions::Expression
+          elsif local_variable.instance_of?(Class) && local_variable < ::Expressions::Expression
             expression = local_variable.new(provider_key: name)
           elsif ::Low::TypeQuery.type?(local_variable)
             expression = TypeExpression.new(type: local_variable)

@@ -116,7 +116,7 @@ module Low
           Low::Repository.delete(name: method_proxy.name, klass: class_proxy.klass)
           return false
         end
-        
+
         true
       end
 

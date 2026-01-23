@@ -11,7 +11,7 @@ RSpec.describe Dependencies do
       expect(described_class.low_methods.keys).to include(
         :dependency,
         :symbol_dependency,
-        :string_dependency,
+        :string_dependency
       )
     end
   end

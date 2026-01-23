@@ -23,18 +23,17 @@ module Low
       end
     end
 
-    def type_writer(named_expressions)
+    def type_writer(named_expressions) # rubocop:disable Metrics/AbcSize
       named_expressions.each do |name, exp|
         last_caller = caller_locations(1, 1).first
         file = FileProxy.new(path: last_caller.path, start_line: last_caller.lineno, scope: "#{self}##{name}")
 
-        expression = expression(exp)
-        params = [ParamProxy.new(expression:, name:, type: :hashreq, file:)]
+        params = [ParamProxy.new(expression: expression(exp), name:, type: :hashreq, file:)]
         @low_methods["#{name}="] = MethodProxy.new(name:, params:)
 
         define_method("#{name}=") do |value|
           method_proxy = self.class.low_methods["#{name}="]
-          expression.validate!(value:, proxy: method_proxy.params.first)
+          method_proxy.params.first.expression.validate!(value:, proxy: method_proxy.params.first)
           instance_variable_set("@#{name}", value)
         end
       end
