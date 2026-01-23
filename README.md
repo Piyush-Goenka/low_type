@@ -178,8 +178,8 @@ def my_method(my_arg: String | MyType | value(MyType)) # => MyType is the defaul
 LowType evaluates type expressions on *class load* (just once) to be efficient and thread-safe. Then the defined types are checked per method call.  
 However, `type()` type expressions are evaluated when they are called at *runtime* on an instance, and this may impact performance.
 
-|                         | **Evaluation** | **Validation** | ℹ️ *Example*            |
-|-------------------------|----------------|----------------|-------------------------|
+|                         | **Evaluation**  | **Validation** | ℹ️ *Example*            |
+|-------------------------|-----------------|----------------|-------------------------|
 | **Method param types**  | 🟢 Class load   | 🟠 Runtime     | `def method(name: T)`   |
 | **Method return types** | 🟢 Class load   | 🟠 Runtime     | `def method() -> { T }` |
 | **Instance types**      | 🟢 Class load   | 🟠 Runtime     | `type_accessor(name: T)`|
