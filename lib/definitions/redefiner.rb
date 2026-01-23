@@ -21,20 +21,7 @@ module LowType
       end
 
       def redefinable?(method_proxy:, class_proxy:)
-        # Method has no types.
-        if method_proxy.params == [] && method_proxy.return_proxy.nil?
-          LowType::Repository.delete(name: method_proxy.name, klass: class_proxy.klass)
-          return false
-        end
-
-        # Method outside class bounds.
-        within_bounds = method_proxy.start_line > class_proxy.start_line && method_proxy.end_line <= class_proxy.end_line
-        if method_proxy.lines? && class_proxy.lines? && !within_bounds
-          LowType::Repository.delete(name: method_proxy.name, klass: class_proxy.klass)
-          return false
-        end
-
-        true
+        method_has_types?(method_proxy:, class_proxy:) && method_within_class_bounds?(method_proxy:, class_proxy:)
       end
 
       def untyped_args(args:, kwargs:, method_proxy:) # rubocop:disable Metrics/AbcSize
@@ -122,6 +109,25 @@ module LowType
             private name if class_proxy.private_start_line && method_proxy.start_line > class_proxy.private_start_line
           end
         end
+      end
+
+      def method_has_types?(method_proxy:, class_proxy:)
+        if method_proxy.params == [] && method_proxy.return_proxy.nil?
+          LowType::Repository.delete(name: method_proxy.name, klass: class_proxy.klass)
+          return false
+        end
+        
+        true
+      end
+
+      def method_within_class_bounds?(method_proxy:, class_proxy:)
+        within_bounds = method_proxy.start_line > class_proxy.start_line && method_proxy.end_line <= class_proxy.end_line
+        if method_proxy.lines? && class_proxy.lines? && !within_bounds
+          LowType::Repository.delete(name: method_proxy.name, klass: class_proxy.klass)
+          return false
+        end
+
+        true
       end
     end
   end
