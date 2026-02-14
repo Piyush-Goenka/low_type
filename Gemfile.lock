@@ -14,9 +14,10 @@ PATH
   specs:
     low_type (1.1.8)
       expressions (~> 0.1)
+      lowkey
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://gem.coop/
   specs:
     ast (2.4.3)
     base64 (0.3.0)
@@ -26,6 +27,8 @@ GEM
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
+    lowkey (0.2.0)
+      prism
     method_source (1.1.0)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)

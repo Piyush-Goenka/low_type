@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'lowkey'
+
 require_relative 'adapters/adapter_loader'
 require_relative 'definitions/redefiner'
 require_relative 'definitions/type_accessors'
