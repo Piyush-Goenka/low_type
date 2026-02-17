@@ -21,7 +21,7 @@ module Low
       end
 
       def redefinable?(method_proxy:, class_proxy:, klass:)
-        method_has_types?(method_proxy:, class_proxy:, klass:) && method_within_class_bounds?(method_proxy:, class_proxy:, klass:)
+        method_has_types?(method_proxy:, klass:) && method_within_class_bounds?(method_proxy:, class_proxy:, klass:)
       end
 
       def untyped_args(args:, kwargs:, method_proxy:) # rubocop:disable Metrics/AbcSize
@@ -112,8 +112,7 @@ module Low
         end
       end
 
-      def method_has_types?(method_proxy:, class_proxy:, klass:)
-        if method_proxy.params == [] && method_proxy.return_proxy.nil?
+      def method_has_types?(method_proxy:, klass:)
         if method_proxy.param_proxies == [] && method_proxy.return_proxy.nil?
           Low::Repository.delete(name: method_proxy.name, klass:)
           return false

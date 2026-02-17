@@ -7,7 +7,8 @@ module Low
   class ParamProxy < ErrorInterface
     attr_reader :expression, :name, :type, :position
 
-    def initialize(expression:, name:, type:, file_path:, start_line:, scope:, position: nil)
+    # TODO: Refactor file path, start line and scope into "meta scope" model.
+    def initialize(expression:, name:, type:, file_path:, start_line:, scope:, position: nil) # rubocop:disable Metrics/ParameterLists
       super(file_path:, start_line:, scope:)
 
       @expression = expression
