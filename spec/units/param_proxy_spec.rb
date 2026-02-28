@@ -4,7 +4,7 @@ require_relative '../../lib/expressions/type_expression'
 require_relative '../../lib/proxies/param_proxy'
 require_relative '../../lib/types/error_types'
 
-RSpec.describe Low::ParamProxy do
+RSpec.describe Lowkey::ParamProxy do
   subject(:param_proxy) do
     described_class.new(expression:, name: :dummy_method, type: :req, file_path:, start_line:, scope:, position: nil)
   end

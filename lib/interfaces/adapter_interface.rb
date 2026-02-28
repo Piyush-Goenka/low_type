@@ -2,8 +2,8 @@
 
 module Low
   class AdapterInterface
-    def process
-      raise NotImplementedError
+    def module
+      nil
     end
   end
 end

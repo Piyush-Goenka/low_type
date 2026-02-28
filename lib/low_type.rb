@@ -32,27 +32,20 @@ module LowType
   def self.included(klass) # rubocop:disable Metrics/AbcSize
     require_relative 'syntax/union_types' if LowType.config.union_type_expressions
 
-    class << klass
-      def low_methods
-        @low_methods ||= {}
-      end
-    end
-
     file_path = Low::FileQuery.file_path(klass:)
     return unless File.exist?(file_path)
 
     file_proxy = Lowkey.load(file_path:)
-    class_proxy = file_proxy.definitions[klass.name]
+    class_proxy = file_proxy[klass.name]
 
     klass.extend Low::TypeAccessors
     klass.include Low::Types
     klass.include Low::Expressions
-    klass.prepend Low::Redefiner.redefine(method_nodes: class_proxy.instance_methods, class_proxy:, klass:)
-    klass.singleton_class.prepend Low::Redefiner.redefine(method_nodes: class_proxy.class_methods, class_proxy:, klass:)
+    klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:, klass:)
+    klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:, klass:)
 
     if (adapter = Low::Adapter::Loader.load(klass:, class_proxy:))
-      adapter.process
-      klass.prepend Low::Adapter::Methods
+      klass.prepend adapter.module if adapter.module
     end
   end
 

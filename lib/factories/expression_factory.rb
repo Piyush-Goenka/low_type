@@ -1,13 +1,61 @@
 # frozen_string_literal: true
 
+require 'expressions'
+require 'lowkey'
+
+require_relative '../expressions/expressions'
 require_relative '../expressions/type_expression'
 require_relative '../expressions/value_expression'
+require_relative '../syntax/syntax'
+require_relative '../types/complex_types'
+require_relative '../types/status'
 
 module Low
   class ExpressionFactory
+    using ::LowType::Syntax
+
     class << self
+      include Expressions
+      include Types
+
       def type_expression_with_value(type:)
         TypeExpression.new(default_value: ValueExpression.new(value: type))
+      end
+
+      def load_method_expressions(method_proxy:)
+        load_param_proxy_expressions(method_proxy:)
+        load_return_proxy_expression(return_proxy: method_proxy.return_proxy)
+      end
+
+      def load_param_proxy_expressions(method_proxy:)
+        method_proxy.tagged_params(:default_value).each do |param_proxy|
+          name = param_proxy.name
+          type = param_proxy.type
+
+          # Not a security risk because the code comes from a trusted source; the file that included lowtype.
+          default_value = eval(param_proxy.default_value, binding, __FILE__, __LINE__) # rubocop:disable Security/Eval
+
+          if default_value.is_a?(::Expressions::Expression)
+            param_proxy.expression = default_value
+          elsif default_value.instance_of?(Class) && default_value.name == 'Low::LowDependency'
+            param_proxy.expression = default_value.new(provider_key: name)
+          elsif ::Low::TypeQuery.type?(default_value)
+            param_proxy.expression = TypeExpression.new(type: default_value)
+          end
+        end
+      end
+
+      def load_return_proxy_expression(return_proxy:)
+        begin
+          # Not a security risk because the code comes from a trusted source; the file that included lowtype.
+          expression = eval(return_proxy.value, binding, __FILE__, __LINE__) # rubocop:disable Security/Eval
+        rescue NameError
+          raise NameError, "Unknown return type '#{return_proxy.value}' for #{return_proxy.scope} at #{return_proxy.file_path}:#{return_proxy.start_line}"
+        end
+
+        expression = TypeExpression.new(type: expression) unless expression.is_a?(TypeExpression)
+
+        return_proxy.expression = expression
       end
     end
   end

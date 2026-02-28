@@ -31,7 +31,7 @@ RSpec.describe Low::ProxyFactory do
 
         result = described_class.return_proxy(method_node:, name:, file_path:, scope:)
 
-        expect(result).to be_a(Low::ReturnProxy)
+        expect(result).to be_a(Lowkey::ReturnProxy)
       end
     end
 

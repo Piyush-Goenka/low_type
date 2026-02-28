@@ -2,18 +2,7 @@
 
 module Low
   # Used by proxies to output errors.
-  class ErrorInterface
-    attr_reader :file_path, :start_line, :scope
-
-    def initialize(file_path:, start_line:, scope:)
-      @file_path = file_path
-      @start_line = start_line
-      @scope = scope
-
-      @output_mode = LowType.config.output_mode
-      @output_size = LowType.config.output_size
-    end
-
+  module ErrorInterface
     def error_type
       raise NotImplementedError
     end
@@ -23,12 +12,12 @@ module Low
     end
 
     def output(value:)
-      case @output_mode
+      case LowType.config.output_mode
       when :type
         # TODO: Show full type structure in error output instead of just the type of the supertype.
         value.class
       when :value
-        value.inspect[0...@output_size]
+        value.inspect[0...LowType.config.output_size]
       else
         'REDACTED'
       end

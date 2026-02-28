@@ -19,7 +19,8 @@ module Low
         @low_methods[name] = ::Lowkey::MethodProxy.new(file_path:, start_line:, scope:, name:, return_proxy:)
 
         define_method(name) do
-          method_proxy = self.class.low_methods[name]
+          method_proxy = Lowkey[file_path][self.class.name][__method__]
+
           value = instance_variable_get("@#{name}")
           type_expression.validate!(value:, proxy: method_proxy.return_proxy)
           value
@@ -34,7 +35,7 @@ module Low
         start_line = last_caller.lineno
         scope = "#{self}##{name}"
 
-        param_proxies = [ParamProxy.new(expression: cast_type_expression(expression), name:, type: :hashreq, file_path:, start_line:, scope:)]
+        param_proxies = [::Lowkey::ParamProxy.new(expression: cast_type_expression(expression), name:, type: :hashreq, file_path:, start_line:, scope:)]
         @low_methods["#{name}="] = ::Lowkey::MethodProxy.new(file_path:, start_line:, scope:, name:, param_proxies:)
 
         define_method("#{name}=") do |value|

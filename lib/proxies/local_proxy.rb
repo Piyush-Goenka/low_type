@@ -4,11 +4,15 @@ require_relative '../interfaces/error_interface'
 require_relative '../types/error_types'
 
 module Low
-  class LocalProxy < ErrorInterface
-    attr_reader :type_expression, :name
+  class LocalProxy
+    include ErrorInterface
+
+    attr_reader :type_expression, :name, :file_path, :start_line, :scope
 
     def initialize(type_expression:, name:, file_path:, start_line:, scope:)
-      super(file_path:, start_line:, scope:)
+      @file_path = file_path
+      @start_line = start_line
+      @scope = scope
 
       @type_expression = type_expression
       @name = name

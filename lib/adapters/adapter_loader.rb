@@ -7,14 +7,9 @@ module Low
     class Loader
       class << self
         def load(klass:, class_proxy:)
-          adaptor = nil
-
           ancestors = klass.ancestors.map(&:to_s)
-          adaptor = Sinatra.new(klass:, class_proxy:) if ancestors.include?('Sinatra::Base')
-
-          return if adaptor.nil?
-
-          adaptor
+          return SinatraAdapter.new(class_proxy:) if ancestors.include?('Sinatra::Base')
+          nil
         end
       end
     end
