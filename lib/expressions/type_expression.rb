@@ -123,6 +123,9 @@ module Low
     end
 
     def hash_types_match_values?(types:, values:)
+      return values.empty? if types.empty?
+      return false if values.empty?
+
       # TODO: Shallow validation of hash could be made deeper with user config.
       types.keys[0] == values.keys[0].class && types.values[0] == values.values[0].class
     end

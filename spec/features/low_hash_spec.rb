@@ -119,4 +119,26 @@ RSpec.describe 'Hash[T]' do
       end
     end
   end
+
+  describe '#type_accessor with Hash[K => V] | {}' do
+    it 'allows an empty hash return value' do
+      expect(LowHashAccessor.new(nodes: {}).nodes).to eq({})
+    end
+
+    it 'allows a typed non-empty hash return value' do
+      nodes = { 'child' => LowHashTrieNode.new }
+      expect(LowHashAccessor.new(nodes:).nodes).to eq(nodes)
+    end
+
+    context 'when hash key/value types are invalid' do
+      let(:error_message) do
+        "Invalid return type 'Hash' for method 'nodes'. Valid types: '{String=>LowHashTrieNode} | {}'"
+      end
+
+      it 'raises a return type error' do
+        expect { LowHashAccessor.new(nodes: { 123 => 'bad' }).nodes }
+          .to raise_error(Low::ReturnTypeError, error_message)
+      end
+    end
+  end
 end

@@ -25,3 +25,17 @@ class LowHash
     greetings
   end
 end
+
+class LowHashTrieNode
+end
+
+class LowHashAccessor
+  include LowType
+  using LowType::Syntax
+
+  type_accessor nodes: Hash[String => LowHashTrieNode] | {}
+
+  def initialize(nodes:)
+    @nodes = nodes
+  end
+end
