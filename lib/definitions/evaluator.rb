@@ -11,6 +11,25 @@ require_relative '../types/complex_types'
 require_relative '../types/status'
 
 module Low
+  # Evaluate code stored in strings into constants and values.
+  # ┌────────┐     ┌─────────┐     ┌─────────────┐     ┌─────────┐     ┌─────────┐
+  # │ Lowkey │     │ Proxies │     │ Expressions │     │ LowType │     │ Methods │
+  # └────┬───┘     └────┬────┘     └──────┬──────┘     └────┬────┘     └────┬────┘
+  #      │              │                 │                 │               │
+  #      │ Parses AST   │                 │                 │               │
+  #      ├─────────────►│                 │                 │               │
+  #      │              │                 │                 │               │
+  #      │              │ Stores          │                 │               │
+  #      │              ├────────────────►│                 │               │
+  #      │              │                 │                 │               │
+  #      │              │                 │ Evaluates <-- YOU ARE HERE.     |
+  #      │              │                 │◄────────────────┤               │
+  #      │              │                 │                 │               │
+  #      │              │                 │                 │ Redefines     │
+  #      │              │                 │                 ├──────────────►│
+  #      │              │                 │                 │               │
+  #      │              │                 │ Validates       │               │
+  #      │              │                 │◄┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
   class Evaluator
     using ::LowType::Syntax
 

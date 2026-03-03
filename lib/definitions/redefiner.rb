@@ -5,6 +5,25 @@ require_relative '../definitions/evaluator'
 
 module Low
   # Redefine methods to have their arguments and return values type checked.
+  # ┌────────┐     ┌─────────┐     ┌─────────────┐     ┌─────────┐     ┌─────────┐
+  # │ Lowkey │     │ Proxies │     │ Expressions │     │ LowType │     │ Methods │
+  # └────┬───┘     └────┬────┘     └──────┬──────┘     └────┬────┘     └────┬────┘
+  #      │              │                 │                 │               │
+  #      │ Parses AST   │                 │                 │               │
+  #      ├─────────────►│                 │                 │               │
+  #      │              │                 │                 │               │
+  #      │              │ Stores          │                 │               │
+  #      │              ├────────────────►│                 │               │
+  #      │              │                 │                 │               │
+  #      │              │                 │ Evaluates       │               │
+  #      │              │                 │◄────────────────┤               │
+  #      │              │                 │                 │               │
+  #      │              │                 │                 │ Redefines <-- YOU ARE HERE.
+  #      │              │                 │                 ├──────────────►│
+  #      │              │                 │                 │               │
+  #      │              │                 │ Validates       │               │
+  #      │              │                 │◄┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+  #      │              │                 │                 │               │
   class Redefiner
     class << self
       def redefine(method_proxies:, class_proxy:, klass:)
