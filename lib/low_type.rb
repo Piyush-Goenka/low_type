@@ -50,7 +50,7 @@ module LowType
     klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:, klass:)
 
     if (adapter = Low::Adapter::Loader.load(klass:, class_proxy:))
-      klass.prepend adapter.module if adapter.module
+      klass.prepend adapter.module(file_path: class_proxy.file_path)
     end
   end
 

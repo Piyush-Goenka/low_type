@@ -11,13 +11,10 @@ module Low
   module Adapter
     # We don't use https://sinatrarb.com/extensions.html because we need to type check all Ruby methods (not just Sinatra) at a lower level.
     class SinatraAdapter < AdapterInterface
-      def initialize(class_proxy:)
-        @class_proxy = class_proxy
-        @file_path = class_proxy.file_path
-      end
-
-      def module
+      def module(file_path:)
         Module.new do
+          @@file_path = file_path
+
           # Unfortunately overriding invoke() is the best way to validate types for now. Though direct it's also very compute efficient.
           # I originally tried an after filter and it mostly worked but it only had access to Response which isn't the raw return value.
           # I suggest that Sinatra provide a hook that allows us to access the raw return value of a route before it becomes a Response.
@@ -41,8 +38,8 @@ module Low
 
           def lowtype_validate!(value:)
             route = "#{request.request_method} #{request.path}"
-            if (method_proxy = Lowkey[file_path: @file_path][self.class.name][route]) && (proxy = method_proxy.return_proxy)
-              proxy.type_expression.validate!(value:, proxy:)
+            if (method_proxy = Lowkey[@@file_path][self.class.name][route]) && (proxy = method_proxy.return_proxy)
+              proxy.expression.validate!(value:, proxy:)
             end
           end
         end
