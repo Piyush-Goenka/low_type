@@ -2,7 +2,7 @@
 
 module Low
   # Used by proxies to output errors.
-  module ErrorInterface
+  module ErrorHandling
     def error_type
       raise NotImplementedError
     end

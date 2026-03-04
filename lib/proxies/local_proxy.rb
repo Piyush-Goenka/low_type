@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../interfaces/error_interface'
+require_relative '../interfaces/error_handling'
 require_relative '../types/error_types'
 
 module Low
   class LocalProxy
-    include ErrorInterface
+    include ErrorHandling
 
     attr_reader :type_expression, :name, :file_path, :start_line, :scope
 

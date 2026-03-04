@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-require_relative '../interfaces/error_interface'
+require 'lowkey'
+
+require_relative '../interfaces/error_handling'
 require_relative '../types/error_types'
 
 class ::Lowkey::ReturnProxy
-  include ::Low::ErrorInterface
+  include ::Low::ErrorHandling
 
   def error_type
     ::Low::ReturnTypeError
