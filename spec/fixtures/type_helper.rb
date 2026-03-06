@@ -2,7 +2,7 @@
 
 require_relative '../../lib/low_type'
 
-class LowLocal
+class TypeHelper
   include LowType
   using LowType::Syntax
 
@@ -49,7 +49,7 @@ class LowLocal
   end
 end
 
-class LowLocalWithoutRefinements
+class TypeHelperWithoutRefinements
   include LowType
 
   def subtype_array
