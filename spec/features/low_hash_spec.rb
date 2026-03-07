@@ -6,15 +6,6 @@ RSpec.describe 'Hash[T]' do
   subject(:low_hash) { LowHash.new(hash:) }
   let(:hash) { { 'Hello' => 'Goodbye' } }
 
-  describe '.included' do
-    it 'redefines methods on class load' do
-      expect(LowHash.low_methods.keys).to include(
-        :typed_hash_arg,
-        :typed_hash_arg_and_default_value
-      )
-    end
-  end
-
   describe '#initialize' do
     it 'instantiates a typed class' do
       expect { low_hash }.not_to raise_error

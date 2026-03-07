@@ -209,8 +209,8 @@ LowType.configure do |config|
   config.output_mode = :type
   config.output_size = 100
 
-  # Set to "true" to type check all elements of an Array/Hash (not just the first)
-  config.deep_type_check = false
+  # Set to "false" to type check only the first element of an Array/Hash (performance vs accuracy).
+  config.deep_type_check = true
 
   # The "|" pipe syntax requires a monkey-patch but can be disabled if you don't need union types with default values.
   # This is the only monkey-patch in the entire library and is a relatively harmless one, see "syntax/union_types.rb".
@@ -336,10 +336,35 @@ class Child < Parent
 end
 ```
 
+## Architecture
+
+```mermaid
+sequenceDiagram
+  box File Load
+    participant Lowkey
+    participant Proxies@{ "type" : "collections" }
+  end
+
+  box Class Load
+    participant Expressions@{ "type" : "collections" }
+    participant LowType
+  end
+
+  box Runtime
+    participant Methods@{ "type" : "collections" }
+  end
+
+  Lowkey->>Proxies: Parses AST
+  Proxies->>Expressions: Stores
+  LowType->>Expressions: Evaluates
+  LowType->>Methods: Redefines
+  Methods-->>Expressions: Validates per method call or disable per environment
+```
+
 ## Philosophy
 
 🦆 **Duck typing is beautiful.** Ruby is an amazing language **BECAUSE** it's not typed. I don't believe Ruby should ever be fully typed, but you should be able to sprinkle in types into some areas of your codebase where you'd like self-documentation and a little reassurance that the right values are coming in/out.
 
 🌀 **Less DSL. More types.** As much as possible LowType looks just like Ruby if it had types. There's no special method calls for the base functionality, and defining types at runtime simply uses a `type()` method which almost looks like a `type` keyword, had Ruby implemented types.
 
-💡 **Dedicated to David.** A kind person and an electrical engineer who I'll never be as smart as. WTF even is electricity?
+💡 **Dedicated to David.** A kind granddad and an electrical engineer who I'll never be as smart as. Love you David.

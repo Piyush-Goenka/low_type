@@ -12,15 +12,15 @@ PATH
 PATH
   remote: ../lowkey
   specs:
-    lowkey (0.2.1)
+    lowkey (0.3.0)
       prism
 
 PATH
   remote: .
   specs:
-    low_type (1.1.9)
+    low_type (1.1.10)
       expressions (~> 0.1)
-      lowkey (~> 0.2)
+      lowkey (~> 0.3)
 
 GEM
   remote: https://gem.coop/
