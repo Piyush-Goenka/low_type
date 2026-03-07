@@ -363,8 +363,8 @@ sequenceDiagram
 
 Three distinct phases isolate concerns:
 1. **File Load:** Code is parsed into an Abstract Syntax Tree but not evaluated (stored as strings)
-2. **Class Load:** Constants and expressions are evaluated into real Ruby objects
-3. **Runtime:** Method argument types and return types are defined (optionally validated)
+2. **Class Load:** Constants and expressions are evaluated into real Ruby objects and methods redefined
+3. **Runtime:** Method argument types and return types are optionally validated
 
 ## Philosophy
 
