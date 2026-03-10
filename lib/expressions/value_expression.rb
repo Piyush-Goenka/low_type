@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-# A value expression converts a type to a value in the eyes of LowType.
+# A value expression presents a type as a value:
+# 1. It is an instance
+# 2. It has a class method
 class ValueExpression
   attr_reader :value
 

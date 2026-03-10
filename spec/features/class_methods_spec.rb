@@ -4,16 +4,6 @@ require_relative '../../lib/types/error_types'
 require_relative '../fixtures/class_methods'
 
 RSpec.describe ClassMethods do
-  describe '.included' do
-    it 'redefines methods on class load' do
-      expect(described_class.low_methods.keys).to include(
-        :inline_class_typed_arg,
-        :class_typed_arg,
-        :class_typed_arg_and_default_value
-      )
-    end
-  end
-
   describe '.inline_class_typed_arg' do
     it 'passes through the argument' do
       expect(described_class.inline_class_typed_arg('Hi')).to eq('Hi')

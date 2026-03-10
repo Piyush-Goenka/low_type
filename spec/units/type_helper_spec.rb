@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require_relative '../../lib/types/error_types'
-require_relative '../fixtures/low_local'
+require_relative '../fixtures/type_helper'
 
-RSpec.describe 'Expressions' do
-  subject { LowLocal.new }
+RSpec.describe 'type() helper' do
+  subject { TypeHelper.new }
 
   describe '#initialize' do
     it 'instantiates a class' do
@@ -43,7 +43,7 @@ RSpec.describe 'Expressions' do
     end
 
     context 'when the type is wrong' do
-      let(:error_message) { /Invalid variable type Array in 'LowLocal:\d+'. Valid types: '\[Integer\]'/ }
+      let(:error_message) { /Invalid variable type Array in 'TypeHelper:\d+'. Valid types: '\[Integer\]'/ }
 
       it 'raises an argument type error' do
         expect { subject.invalid_subtype_array }.to raise_error(Low::LocalTypeError, error_message)
@@ -51,9 +51,9 @@ RSpec.describe 'Expressions' do
     end
 
     context 'when the class is missing syntax refinements' do
-      subject { LowLocalWithoutRefinements.new }
+      subject { TypeHelperWithoutRefinements.new }
 
-      let(:error_message) { "Invalid type expression, likely because you didn't add 'using LowType::Syntax'" }
+      let(:error_message) { "Invalid type expression. Did you add 'using LowType::Syntax'?" }
 
       it 'raises a config error' do
         expect { subject.subtype_array }.to raise_error(Low::ConfigError, error_message)
@@ -68,7 +68,7 @@ RSpec.describe 'Expressions' do
 
     context 'when the type is wrong' do
       let(:error_message) do
-        /Invalid variable type Array in 'LowLocal:\d+'. Valid types: '\[Integer, String, Symbol\]'/
+        /Invalid variable type Array in 'TypeHelper:\d+'. Valid types: '\[Integer, String, Symbol\]'/
       end
 
       it 'raises an argument type error' do

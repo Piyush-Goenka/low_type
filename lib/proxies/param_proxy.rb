@@ -1,28 +1,16 @@
 # frozen_string_literal: true
 
-require_relative '../interfaces/error_interface'
+require 'lowkey'
+
+require_relative '../interfaces/error_handling'
 require_relative '../types/error_types'
 
-module Low
-  class ParamProxy < ErrorInterface
-    attr_reader :expression, :name, :type, :position
-
-    # TODO: Refactor file path, start line and scope into "meta scope" model.
-    def initialize(expression:, name:, type:, file_path:, start_line:, scope:, position: nil) # rubocop:disable Metrics/ParameterLists
-      super(file_path:, start_line:, scope:)
-
-      @expression = expression
-      @name = name
-      @type = type
-      @position = position
-    end
-
-    def required?
-      @expression.required?
-    end
+module ::Lowkey
+  class ParamProxy
+    include ::Low::ErrorHandling
 
     def error_type
-      ArgumentTypeError
+      ::Low::ArgumentTypeError
     end
 
     def error_message(value:)

@@ -4,9 +4,9 @@ require_relative '../../lib/expressions/type_expression'
 require_relative '../../lib/proxies/param_proxy'
 require_relative '../../lib/types/error_types'
 
-RSpec.describe Low::ParamProxy do
+RSpec.describe Low::ErrorHandling do
   subject(:param_proxy) do
-    described_class.new(expression:, name: :dummy_method, type: :req, file_path:, start_line:, scope:, position: nil)
+    Lowkey::ParamProxy.new(file_path:, start_line:, scope:, name: :dummy_method, type: :opt_req)
   end
 
   let(:expression) { Low::TypeExpression.new(default_value: nil) }
