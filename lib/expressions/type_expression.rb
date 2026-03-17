@@ -131,7 +131,7 @@ module Low
       if type.instance_of?(Class)
         return type.match?(value:) if Low::TypeQuery.complex_type?(expression: type)
 
-        return type == value.class
+        return value.is_a?(type)
       elsif type.instance_of?(::Low::TypeExpression)
         type.validate!(value:, proxy:)
         return true
