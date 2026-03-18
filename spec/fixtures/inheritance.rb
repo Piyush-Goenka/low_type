@@ -14,10 +14,10 @@ class Kennel
   end
 end
 
-class NumericBox
+class NumericStore
   include LowType
 
-  def store(value: Numeric)
+  def save(value: Numeric)
     value
   end
 end

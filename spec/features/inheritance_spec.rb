@@ -35,25 +35,25 @@ RSpec.describe 'Subclass type inheritance' do
 
   # Test plan item 3: Core Ruby hierarchies
   context 'core Ruby hierarchy (Integer for Numeric)' do
-    subject(:box) { NumericBox.new }
+    subject(:store) { NumericStore.new }
 
     it 'accepts an Integer for a Numeric parameter' do
-      expect { box.store(value: 42) }.not_to raise_error
+      expect { store.save(value: 42) }.not_to raise_error
     end
 
     it 'accepts a Float for a Numeric parameter' do
-      expect { box.store(value: 3.14) }.not_to raise_error
+      expect { store.save(value: 3.14) }.not_to raise_error
     end
 
     it 'rejects a non-Numeric value' do
-      expect { box.store(value: 'not a number') }.to raise_error(Low::ArgumentTypeError)
+      expect { store.save(value: 'not a number') }.to raise_error(Low::ArgumentTypeError)
     end
   end
 
-  context 'core Ruby hierarchy (File for IO)' do
+  context 'when reading a file' do
     subject(:reader) { IOReader.new }
 
-    it 'accepts a File instance for an IO parameter' do
+    it 'accepts a File instance arg for an IO typed parameter (File is a subclass of IO)' do
       file = File.open(__FILE__, 'r')
       expect { reader.read(source: file) }.not_to raise_error
       file.close
