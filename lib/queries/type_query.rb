@@ -29,10 +29,7 @@ module Low
       end
 
       def typed_hash?(expression:)
-        return false unless expression.is_a?(Hash)
-        return true if expression.empty?
-
-        basic_type?(expression: expression.keys.first) && basic_type?(expression: expression.values.first)
+        expression.is_a?(Hash) && basic_type?(expression: expression.keys.first) && basic_type?(expression: expression.values.first)
       end
     end
   end

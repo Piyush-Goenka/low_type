@@ -123,6 +123,7 @@ module Low
     end
 
     def hash_types_match_values?(types:, values:)
+      return true if values.empty? && empty_hash_default_value?
       return values.empty? if types.empty?
       return false if values.empty?
 
@@ -147,6 +148,10 @@ module Low
       return @deep_type_check unless @deep_type_check.nil?
 
       LowType.config.deep_type_check
+    end
+
+    def empty_hash_default_value?
+      @default_value.is_a?(Hash) && @default_value.empty?
     end
   end
 end
