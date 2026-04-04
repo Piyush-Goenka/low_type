@@ -31,7 +31,7 @@ require_relative 'types/complex_types'
 #      │              │                 │◄┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
 #      │              │                 │                 │               │
 module LowType
-  # We do as much as possible on class load rather than on object instantiation to be thread-safe and efficient.
+  # Defers evaluation and redefinition until after the class body finishes loading via TracePoint :end.
   def self.included(klass)
     file_path = Low::FileQuery.file_path(klass:)
     file_proxy = Lowkey.load(file_path)
@@ -43,8 +43,8 @@ module LowType
     klass.extend Low::Types
 
     # Use TracePoint :end to capture the class binding after the class body finishes loading.
-    # At :end time, trace.self is the including class and trace.binding is the class body's binding —
-    # stored on class_proxy.class_binding for use by LowType and other consumers (e.g. Evaluator, Redefiner).
+    # At :end time, trace.self is the including class and trace.binding is the class body's binding,
+    # stored on class_proxy.class_binding for use by LowType and other consumers.
     tp = TracePoint.new(:end) do |trace|
       next unless trace.self == klass
 
