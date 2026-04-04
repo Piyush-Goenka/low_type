@@ -37,17 +37,30 @@ module LowType
     file_proxy = Lowkey.load(file_path)
     class_proxy = file_proxy[klass.name]
 
-    Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods)
-
     klass.include Low::ExpressionHelpers
     klass.extend Low::ExpressionHelpers
     klass.extend Low::TypeAccessors
     klass.extend Low::Types
 
-    klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:)
-    klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:)
+    # Use TracePoint :end to capture the class binding after the class body finishes loading.
+    # At :end time, trace.self is the including class and trace.binding is the class body's binding —
+    # stored on class_proxy.class_binding for use by LowType and other consumers (e.g. Evaluator, Redefiner).
+    tp = TracePoint.new(:end) do |trace|
+      next unless trace.self == klass
 
-    Low::Adapter::Loader.load(klass:, class_proxy:)
+      class_proxy.class_binding = trace.binding
+
+      Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods)
+
+      klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:)
+      klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:)
+
+      Low::Adapter::Loader.load(klass:, class_proxy:)
+
+      tp.disable
+    end
+
+    tp.enable
   end
 
   class << self
