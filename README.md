@@ -336,6 +336,8 @@ class Child < Parent
 end
 ```
 
+ℹ️ [In the future](https://github.com/low-rb/low_type/issues/43) you will be able to add a `# type_expressions: true` magic comment to the top of your file.
+
 ## Architecture
 
 ```mermaid
