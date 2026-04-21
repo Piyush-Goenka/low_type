@@ -12,7 +12,7 @@ PATH
 PATH
   remote: ../lowkey
   specs:
-    lowkey (0.4.1)
+    lowkey (0.4.2)
       prism
 
 PATH
