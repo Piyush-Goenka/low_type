@@ -36,25 +36,27 @@ module Low
     using LowType::Syntax
 
     def instance_evaluate(proxy:)
-      # Not a security risk because the code comes from a trusted source; the file that included lowtype.
       eval(proxy.value, binding, proxy.file_path, proxy.start_line) # rubocop:disable Security/Eval
     end
 
+    def class_evaluate(proxy:, class_binding:)
+      eval(proxy.value, class_binding, proxy.file_path, proxy.start_line) # rubocop:disable Security/Eval
+    end
+
     class << self
-      def evaluate(method_proxies:)
+      def evaluate(method_proxies:, class_binding: nil)
         require_relative '../syntax/union_types' if LowType.config.union_type_expressions
 
         method_proxies.each_value do |method_proxy|
-          evaluate_param_proxy_expressions(method_proxy:)
+          evaluate_param_proxy_expressions(method_proxy:, class_binding:)
           evaluate_return_proxy_expression(return_proxy: method_proxy.return_proxy) if method_proxy.return_proxy
         end
       end
 
-      def evaluate_param_proxy_expressions(method_proxy:)
+      def evaluate_param_proxy_expressions(method_proxy:, class_binding: nil)
         begin # rubocop:disable Style/RedundantBegin
           method_proxy.tagged_params(:value).each do |param_proxy|
-            # TODO: Evaluate in the binding of the class that included LowType if not a type managed by LowType.
-            expression = new.instance_evaluate(proxy: param_proxy)
+            expression = class_binding ? new.class_evaluate(proxy: param_proxy, class_binding:) : new.instance_evaluate(proxy: param_proxy)
             param_proxy.expression = cast_type_expression(expression:, method_proxy:)
           end
         rescue NameError

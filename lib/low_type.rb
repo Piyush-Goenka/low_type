@@ -50,7 +50,7 @@ module LowType
 
       class_proxy.class_binding = trace.binding
 
-      Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods)
+      Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods, class_binding: class_proxy.class_binding)
 
       klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:)
       klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:)
