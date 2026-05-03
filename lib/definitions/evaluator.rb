@@ -36,10 +36,12 @@ module Low
     using LowType::Syntax
 
     def instance_evaluate(proxy:)
+      # Not a security risk because the code comes from a trusted source; the file that included lowtype.
       eval(proxy.value, binding, proxy.file_path, proxy.start_line) # rubocop:disable Security/Eval
     end
 
     def class_evaluate(proxy:, class_binding:)
+      # Not a security risk because the code comes from a trusted source; the file that included lowtype.
       eval(proxy.value, class_binding, proxy.file_path, proxy.start_line) # rubocop:disable Security/Eval
     end
 
