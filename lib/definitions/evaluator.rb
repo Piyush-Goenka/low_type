@@ -58,12 +58,17 @@ module Low
       def evaluate_param_proxy_expressions(method_proxy:, class_binding: nil)
         begin # rubocop:disable Style/RedundantBegin
           method_proxy.tagged_params(:value).each do |param_proxy|
-            expression = class_binding ? new.class_evaluate(proxy: param_proxy, class_binding:) : new.instance_evaluate(proxy: param_proxy)
+            expression = begin
+              new.instance_evaluate(proxy: param_proxy)
+            rescue NameError
+              raise unless class_binding
+              new.class_evaluate(proxy: param_proxy, class_binding:)
+            end
             param_proxy.expression = cast_type_expression(expression:, method_proxy:)
           end
-        rescue NameError
+        rescue NameError => e
           mp = method_proxy
-          raise NameError, "Unknown type '#{mp.value}' for #{mp.scope} at #{mp.file_path}:#{mp.start_line}"
+          raise NameError, "Unknown type '#{e.name}' for #{mp.scope} at #{mp.file_path}:#{mp.start_line}"
         end
       end
 
