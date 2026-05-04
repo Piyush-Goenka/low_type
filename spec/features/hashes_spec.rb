@@ -86,6 +86,18 @@ RSpec.describe Hashes do
     end
   end
 
+  describe '#typed_hash_arg_and_empty_hash_default_value' do
+    it 'passes through an explicit empty hash argument' do
+      expect(subject.typed_hash_arg_and_empty_hash_default_value({})).to eq({})
+    end
+
+    context 'when no arg provided' do
+      it 'provides the empty hash default value' do
+        expect(subject.typed_hash_arg_and_empty_hash_default_value).to eq({})
+      end
+    end
+  end
+
   describe '#typed_hash_kwarg' do
     it 'passes through the argument' do
       expect(subject.typed_hash_kwarg(greetings: { 'Hello' => 'Goodbye' })).to eq({ 'Hello' => 'Goodbye' })
@@ -108,6 +120,28 @@ RSpec.describe Hashes do
 
       it 'raises an argument error' do
         expect { subject.typed_hash_kwarg }.to raise_error(Low::ArgumentTypeError, error_message)
+      end
+    end
+  end
+
+  describe '#type_accessor with Hash[K => V] | {}' do
+    it 'allows an empty hash return value' do
+      expect(LowHashAccessor.new(nodes: {}).nodes).to eq({})
+    end
+
+    it 'allows a typed non-empty hash return value' do
+      nodes = { 'child' => 1 }
+      expect(LowHashAccessor.new(nodes:).nodes).to eq(nodes)
+    end
+
+    context 'when hash key/value types are invalid' do
+      let(:error_message) do
+        "Invalid return type 'Hash' for method 'nodes'. Valid types: '{String=>Integer}'"
+      end
+
+      it 'raises a return type error' do
+        expect { LowHashAccessor.new(nodes: { 123 => 'bad' }).nodes }
+          .to raise_error(Low::ReturnTypeError, error_message)
       end
     end
   end
