@@ -152,7 +152,7 @@ RSpec.describe Hashes do
         end
 
         it 'raises an argument type error' do
-          expect { hash.value  = value }.to raise_error(Low::ArgumentTypeError, error_message)
+          expect { hash.value = value }.to raise_error(Low::ArgumentTypeError, error_message)
         end
       end
 
