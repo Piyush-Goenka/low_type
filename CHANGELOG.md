@@ -5,14 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor features that don't break backwards compatibility are released as patches.
 
-## 1.3.0 [UNRELEASED]
+## 1.4.0 [UNRELEASED]
 
 ### Added
 
 - Use Lowkey to export method definitions to RBS
 - Dynamically redefine includer class methods when `binding.pry` called to avoid `step`ing through this code
 
-## 1.2.0 [UNRELEASED]
+## 1.3.0 [UNRELEASED]
 
 ### Added
 
@@ -20,6 +20,13 @@ Minor features that don't break backwards compatibility are released as patches.
 - `Boolean` type support
 - Complex types validation
 - Error mode config
+
+## 1.2.0
+
+### Added
+
+- Support inheritance type checking
+- Support value expression inheritance type checking
 
 ## 1.1.10
 
