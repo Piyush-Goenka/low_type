@@ -120,6 +120,12 @@ age = 'old' # => Raises ArgumentTypeError
 age # => 33
 ```
 
+ℹ️ **Note:** To use the `Array[]`/`Hash[]` enumerable syntax with type accessors you must add `using LowType::Syntax`:
+```ruby
+include LowType
+using LowType::Syntax
+```
+
 ## Local variables
 
 ### `type()`
