@@ -144,7 +144,7 @@ my_var = type String | (say_goodbye || 'Hello Again')
 
 `Array[T]` and `Hash[T]` class methods represent enumerables in the context of type expressions. If you need to create a new `Array`/`Hash` then use `Array.new()`/`Hash.new()` or Array and Hash literals `[]` and `{}`. This is the same syntax that [RBS](https://github.com/ruby/rbs) uses and we need to get use to these class methods returning type expressions if we're ever going to have inline types in Ruby. [RuboCop](https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Style/HashConversion) also suggests `{}` over `Hash[]` syntax for creating hashes.
 
-ℹ️ **Note:** To use the `Array[]`/`Hash[]` enumerable syntax with `type()` you must add `using LowType::Syntax` when including LowType:
+ℹ️ **Note:** To use the `Array[]`/`Hash[]` enumerable syntax with `type()` you must add `using LowType::Syntax`:
 ```ruby
 include LowType
 using LowType::Syntax
@@ -157,6 +157,11 @@ The pipe symbol (`|`) is used in the context of type expressions to define multi
 - The last *value*/`nil` defined becomes the default value: `my_var = TypeOne | TypeTwo | nil`
 
 ℹ️ **Note:** If no default value is defined then the argument will be required.
+
+## Nilable values
+
+- Represent a nilable value with `T | nil`
+- Represent an empty hash with `Hash | {}`
 
 ### `-> { T }` Return Type
 
