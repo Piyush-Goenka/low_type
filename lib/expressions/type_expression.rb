@@ -2,6 +2,7 @@
 
 require 'expressions'
 
+require_relative 'value_expression'
 require_relative '../proxies/param_proxy'
 require_relative '../queries/type_query'
 
@@ -130,9 +131,9 @@ module Low
     def type_matches_value?(type:, value:, proxy:)
       if type.instance_of?(Class)
         return type.match?(value:) if Low::TypeQuery.complex_type?(expression: type)
-
+        return value.value <= type if value.instance_of?(ValueExpression)
         return value.is_a?(type)
-      elsif type.instance_of?(::Low::TypeExpression)
+      elsif type.instance_of?(Low::TypeExpression)
         type.validate!(value:, proxy:)
         return true
       end
