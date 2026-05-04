@@ -86,14 +86,26 @@ RSpec.describe Hashes do
     end
   end
 
-  describe '#typed_hash_arg_and_empty_hash_default_value' do
+  describe '#typed_hash_arg_and_hash_empty_value' do
     it 'accepts empty hash argument as default value' do
-      expect(subject.typed_hash_arg_and_empty_hash_default_value({})).to eq({})
+      expect(subject.typed_hash_arg_and_hash_empty_value({})).to eq({})
     end
 
     context 'when no arg provided' do
       it 'provides the default value' do
-        expect(subject.typed_hash_arg_and_empty_hash_default_value).to eq({})
+        expect(subject.typed_hash_arg_and_hash_empty_value).to eq({})
+      end
+    end
+  end
+
+  describe '#typed_hash_arg_and_key_value_hash_empty_value' do
+    it 'accepts empty hash argument as default value' do
+      expect(subject.typed_hash_arg_and_key_value_hash_empty_value({})).to eq({})
+    end
+
+    context 'when no arg provided' do
+      it 'provides the default value' do
+        expect(subject.typed_hash_arg_and_key_value_hash_empty_value).to eq({})
       end
     end
   end

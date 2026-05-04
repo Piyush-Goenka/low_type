@@ -25,7 +25,11 @@ class Hashes
     greetings
   end
 
-  def typed_hash_arg_and_empty_hash_default_value(greetings = Hash[String => String] | {})
+  def typed_hash_arg_and_hash_empty_value(greetings = Hash | {})
+    greetings
+  end
+
+  def typed_hash_arg_and_key_value_hash_empty_value(greetings = Hash[String => String] | {})
     greetings
   end
 end
