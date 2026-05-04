@@ -27,6 +27,7 @@ Minor features that don't break backwards compatibility are released as patches.
 
 - Support inheritance type checking
 - Support value expression inheritance type checking
+- Support empty hash syntax (`Hash | {}`)
 
 ## 1.1.10
 
