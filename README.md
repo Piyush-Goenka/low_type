@@ -120,7 +120,7 @@ age = 'old' # => Raises ArgumentTypeError
 age # => 33
 ```
 
-ℹ️ **Note:** To use the `Array[]`/`Hash[]` enumerable syntax with type accessors you must add `using LowType::Syntax`:
+ℹ️ To use the `Array[]`/`Hash[]` enumerable syntax with type accessors you must add `using LowType::Syntax`:
 ```ruby
 include LowType
 using LowType::Syntax
@@ -150,7 +150,7 @@ my_var = type String | (say_goodbye || 'Hello Again')
 
 `Array[T]` and `Hash[T]` class methods represent enumerables in the context of type expressions. If you need to create a new `Array`/`Hash` then use `Array.new()`/`Hash.new()` or Array and Hash literals `[]` and `{}`. This is the same syntax that [RBS](https://github.com/ruby/rbs) uses and we need to get use to these class methods returning type expressions if we're ever going to have inline types in Ruby. [RuboCop](https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Style/HashConversion) also suggests `{}` over `Hash[]` syntax for creating hashes.
 
-ℹ️ **Note:** To use the `Array[]`/`Hash[]` enumerable syntax with `type()` you must add `using LowType::Syntax`:
+ℹ️ To use the `Array[]`/`Hash[]` enumerable syntax with `type()` you must add `using LowType::Syntax`:
 ```ruby
 include LowType
 using LowType::Syntax
@@ -162,7 +162,7 @@ The pipe symbol (`|`) is used in the context of type expressions to define multi
 - To allow multiple types separate them between pipes: `my_var = TypeOne | TypeTwo`
 - The last *value*/`nil` defined becomes the default value: `my_var = TypeOne | TypeTwo | nil`
 
-ℹ️ **Note:** If no default value is defined then the argument will be required.
+ℹ️ If no default value is defined then the argument will be required.
 
 ## Nilable values
 
@@ -173,7 +173,7 @@ The pipe symbol (`|`) is used in the context of type expressions to define multi
 
 The `-> { T }` syntax is a lambda without an assignment to a local variable. This is valid Ruby that can be placed immediately after a method definition and on the same line as the method definition, to visually look like the output of that method. It's inert and doesn't run when the method is called, similar to how default values are never called if the argument is managed by LowType. Pretty cool stuff yeah? Your type expressions won't keep re-evaluating in the wild 🐴, only on class load.
 
-ℹ️ **Note:** A method that takes no arguments must include empty parameters `()` for the `-> { T }` syntax to be valid; `def method() -> { T }`.
+ℹ️ A method that takes no arguments must include empty parameters `()` for the `-> { T }` syntax to be valid; `def method() -> { T }`.
 
 ### `value(T)` Value Expression
 
@@ -241,7 +241,7 @@ end
 - `Hash`
 - `nil` represents an optional value
 
-ℹ️ **Note:** Any class/type that's available to Ruby is available to LowType, `require` it and specify its full namespace.
+ℹ️ Any class/type that's available to Ruby is available to LowType, `require` it and specify its full namespace.
 
 ### Complex types
 
