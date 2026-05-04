@@ -87,12 +87,12 @@ RSpec.describe Hashes do
   end
 
   describe '#typed_hash_arg_and_empty_hash_default_value' do
-    it 'passes through an explicit empty hash argument' do
+    it 'accepts empty hash argument as default value' do
       expect(subject.typed_hash_arg_and_empty_hash_default_value({})).to eq({})
     end
 
     context 'when no arg provided' do
-      it 'provides the empty hash default value' do
+      it 'provides the default value' do
         expect(subject.typed_hash_arg_and_empty_hash_default_value).to eq({})
       end
     end
@@ -124,24 +124,46 @@ RSpec.describe Hashes do
     end
   end
 
-  describe '#type_accessor with Hash[K => V] | {}' do
-    it 'allows an empty hash return value' do
-      expect(LowHashAccessor.new(nodes: {}).nodes).to eq({})
+  describe '#type_accessor with Hash[String => Integer] | {}' do
+    subject(:hash) { HashWithTypeAccessor.new(value:) }
+
+    context 'with empty arg' do
+      let(:value) { {} }
+
+      it 'sets empty value' do
+        expect(hash.value = {}).to eq({})
+      end
     end
 
-    it 'allows a typed non-empty hash return value' do
-      nodes = { 'child' => 1 }
-      expect(LowHashAccessor.new(nodes:).nodes).to eq(nodes)
+    context 'with valid types' do
+      let(:value) { { 'valid' => 123 } }
+
+      it 'sets valid value' do
+        expect(hash.value = value).to eq(value)
+      end
     end
 
-    context 'when hash key/value types are invalid' do
-      let(:error_message) do
-        "Invalid return type 'Hash' for method 'nodes'. Valid types: '{String=>Integer}'"
+    context 'with invalid types' do
+      let(:value) { { 123 => 'invalid' } }
+
+      context 'when getting' do
+        let(:error_message) do
+          "Invalid argument type 'Hash' for parameter 'value'. Valid types: '{String => Integer}'"
+        end
+
+        it 'raises an argument type error' do
+          expect { hash.value  = value }.to raise_error(Low::ArgumentTypeError, error_message)
+        end
       end
 
-      it 'raises a return type error' do
-        expect { LowHashAccessor.new(nodes: { 123 => 'bad' }).nodes }
-          .to raise_error(Low::ReturnTypeError, error_message)
+      context 'when setting' do
+        let(:error_message) do
+          "Invalid return type 'Hash' for method 'value'. Valid types: '{String => Integer}'"
+        end
+
+        it 'raises a return type error' do
+          expect { hash.value }.to raise_error(Low::ReturnTypeError, error_message)
+        end
       end
     end
   end

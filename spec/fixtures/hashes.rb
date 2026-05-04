@@ -30,13 +30,13 @@ class Hashes
   end
 end
 
-class LowHashAccessor
+class HashWithTypeAccessor
   include LowType
   using LowType::Syntax
 
-  type_accessor nodes: Hash[String => Integer] | {}
+  type_accessor value: Hash[String => Integer] | {}
 
-  def initialize(nodes:)
-    @nodes = nodes
+  def initialize(value:)
+    @value = value
   end
 end
