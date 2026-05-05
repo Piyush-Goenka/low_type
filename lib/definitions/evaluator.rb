@@ -62,6 +62,7 @@ module Low
               new.instance_evaluate(proxy: param_proxy)
             rescue NameError
               raise unless class_binding
+
               new.class_evaluate(proxy: param_proxy, class_binding:)
             end
             param_proxy.expression = cast_type_expression(expression:, method_proxy:)
