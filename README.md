@@ -186,8 +186,9 @@ def my_method(my_arg: String | MyType | value(MyType)) # => MyType is the defaul
 
 ## Performance
 
-LowType evaluates type expressions on *class load* (just once) to be efficient and thread-safe. Then the defined types are checked per method call.  
-However, `type()` type expressions are evaluated when they are called at *runtime* on an instance, and this may impact performance.
+LowType evaluates type expressions on *class load* (just once) to be efficient and thread-safe. Then the defined types are checked per method call.
+
+However, `type()` type expressions are evaluated as they are called at *runtime* on an instance, and this may impact performance.
 
 |                         | **Evaluation**  | **Validation** | ℹ️ *Example*            |
 |-------------------------|-----------------|----------------|-------------------------|
@@ -198,7 +199,7 @@ However, `type()` type expressions are evaluated when they are called at *runtim
 
 ## Scope
 
-LowType only affects the class that it's `include`d into. Class methods `Array[]`/`Hash[]` are modified for the type expression enumerable syntax (`[]`) to work, but only for LowType's internals (using refinements) and not the `include`d class. The `type()` method requires `using LowType::Syntax` if you want to use the enumerable syntax and will affect all `Array[]`/`Hash[]` class methods of the `include`d class.
+LowType only affects the class that it's `include`d into. Class methods `Array[]`/`Hash[]` are modified for the type expression enumerable syntax (`[]`) to work, but only for LowType's internals (using refinements) and not the `include`d class. The `type()` method requires `using LowType::Syntax` *ONLY* if you want to use the enumerable syntax and will affect *ONLY* the `[]` class method of every `Array[]`/`Hash[]` in the class it's `include`d into.
 
 ## Config
 
@@ -241,8 +242,6 @@ end
 - `Hash`
 - `nil` represents an optional value
 
-ℹ️ Any class/type that's available to Ruby is available to LowType, `require` it and specify its full namespace.
-
 ### Complex types
 
 - `Boolean` - Accepts `true`/`false`) [UNRELEASED]
@@ -253,6 +252,12 @@ end
 - `HTML` (subclass of `String`) - TODO: Check that string is HTML
 - `JSON` (subclass of `String`) - TODO: Check that string is JSON
 - `XML` (subclass of `String`) - TODO: Check that string is XML
+
+### Custom types
+
+Any class/type that's available to Ruby is available to LowType. 
+
+ℹ️ LowType evaluates parameter types in both the binding of LowType and the binding of the class that did the `include`.
 
 ## Integrations
 
@@ -287,9 +292,9 @@ class MyApp < Sinatra::Base
 end
 ```
 
-### LowDependency
+### Providers
 
-With [LowDependency](https://github.com/low-rb/low_dependency) you can inject your dependencies automatically via the constructor:
+With [Providers](https://github.com/low-rb/providers) you can inject your dependencies automatically via the constructor:
 ```ruby
 class MyClass
   include LowType
@@ -299,6 +304,12 @@ class MyClass
   end
 end
 ```
+
+### Raindeer
+
+LowType is supported out of the box by the [Raindeer](https://github.com/raindeer-rb/raindeer) framework. In fact, Raindeer is built on many other Low [gems](https://github.com/orgs/low-rb/repositories).
+
+<p align="center"><a href="https://github.com/raindeer-rb/raindeer"><img src="https://github.com/raindeer-rb/raindeer/raw/main/assets/logo.png" alt="Raindeer logo" height="400"/></a></p>
 
 ### Rubocop
 
