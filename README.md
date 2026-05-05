@@ -164,7 +164,7 @@ The pipe symbol (`|`) is used in the context of type expressions to define multi
 
 ℹ️ If no default value is defined then the argument will be required.
 
-## Nilable values
+### Nilable values
 
 - Represent a nilable value with `T | nil`
 - Represent an empty hash with `Hash | {}`
