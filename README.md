@@ -280,14 +280,14 @@ class MyApp < Sinatra::Base
     'body'
   end
 
-  # Standard types Sinatra uses.
+  # Generic return type for Sinatra.
   get '/' do -> { Array[Integer, Hash, String] }
-    [200, {}, '<h1>Hello!</h1>']    
+    [200, {}, '<h1>Hello!</h1>']
   end
 
-  # Specific types for Sinatra.
+  # Specific return type for Sinatra.
   get '/' do -> { Tuple[Status, Headers, HTML] }
-    [200, {}, '<h1>Hello!</h1>']    
+    [200, {}, '<h1>Hello!</h1>']
   end
 end
 ```
