@@ -7,8 +7,8 @@ gemspec
 
 group :development do
   gem 'expressions', path: '../expressions'
-  gem 'low_dependency', path: '../low_dependency'
   gem 'lowkey', path: '../lowkey'
+  gem 'providers', path: '../providers'
 
   gem 'irb'
   gem 'rack'
