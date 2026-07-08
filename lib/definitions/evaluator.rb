@@ -35,7 +35,7 @@ module Low
     include Types
     using LowType::Syntax
 
-    def instance_evaluate(proxy:)
+    def low_evaluate(proxy:)
       # Not a security risk because the code comes from a trusted source; the file that included lowtype.
       eval(proxy.value, binding, proxy.file_path, proxy.start_line) # rubocop:disable Security/Eval
     end
@@ -59,7 +59,7 @@ module Low
         begin # rubocop:disable Style/RedundantBegin
           method_proxy.tagged_params(:value).each do |param_proxy|
             expression = begin
-              new.instance_evaluate(proxy: param_proxy)
+              new.low_evaluate(proxy: param_proxy)
             rescue NameError
               raise unless class_binding
 
@@ -75,7 +75,7 @@ module Low
 
       def evaluate_return_proxy_expression(return_proxy:)
         begin
-          expression = new.instance_evaluate(proxy: return_proxy)
+          expression = new.low_evaluate(proxy: return_proxy)
         rescue NameError
           rp = return_proxy
           raise NameError, "Unknown return type '#{rp.value}' for #{rp.scope} at #{rp.file_path}:#{rp.start_line}"
