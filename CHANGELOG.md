@@ -21,6 +21,12 @@ Minor features that don't break backwards compatibility are released as patches.
 - Complex types validation
 - Error mode config
 
+## 1.3.1
+
+### Fixed
+
+- Fix Providers integration
+
 ## 1.3.0
 
 - Support custom types in parameters ([#40](https://github.com/low-rb/lowtype/issues/40), [#39](https://github.com/low-rb/lowtype/pull/39), [#6](https://github.com/low-rb/lowkey/pull/6))
