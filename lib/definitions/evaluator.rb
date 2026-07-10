@@ -65,7 +65,7 @@ module Low
 
               new.class_evaluate(proxy: param_proxy, class_binding:)
             end
-            param_proxy.expression = cast_type_expression(expression:, method_proxy:)
+            param_proxy.expression = cast_type_expression(expression:, param_proxy:)
           end
         rescue NameError => e
           mp = method_proxy
@@ -88,11 +88,11 @@ module Low
 
       private
 
-      def cast_type_expression(expression:, method_proxy:)
+      def cast_type_expression(expression:, param_proxy:)
         if expression.is_a?(::Expressions::Expression)
           return expression
         elsif expression.instance_of?(Class) && expression.name == 'Low::Dependency'
-          return expression.new(provider_key: method_proxy.name)
+          return expression.new(provider_key: param_proxy.name)
         elsif TypeQuery.type?(expression)
           return TypeExpression.new(type: expression)
         end
