@@ -18,7 +18,7 @@ end
 **✨ Features:**
 - Inline types
 - Enable/disable per environment
-- Integrates with [Sinatra](http://sinatrarb.com/intro.html) and [Raindeer](http://raindeer.dev) frameworks
+- Integrates with [Sinatra](#sinatra) and [Raindeer](http://raindeer.dev) frameworks
 - Exports to RBS [UNRELEASED]
 - Uninstall easily: `lowtype uninstall`, that's it! [UNRELEASED]
 
